@@ -1,0 +1,34 @@
+/* home */
+body {
+    background-color: darkblue;
+}
+
+div {
+    border: darkblue;
+}
+
+header {
+    background-color: darkblue;
+}
+
+footer {
+    background-color: darkblue;
+}
+
+.popuplanguage {
+    border: 2px solid darkblue;
+}
+
+.section-icon {
+    margin: 0 auto;
+    max-width: 96%;
+    height: 125px;
+    width: auto;
+    object-fit: contain;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.section-icon:hover {
+    transform: scale(1.02);
+}

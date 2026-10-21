@@ -1,0 +1,32 @@
+/* photography */
+body {
+    background-color: rgb(0, 44, 0);
+}
+
+div {
+    border: rgb(0, 44, 0);
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+header {
+    background-color: rgb(0, 44, 0);
+}
+
+footer {
+    background-color: rgb(0, 44, 0);
+}
+
+img {
+    width: 600px;
+    margin-bottom: 40px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 3px solid black;
+    max-width: 96%;
+    height: auto;
+}
+
+.popuplanguage {
+    border: 2px solid rgb(0, 44, 0);
+}

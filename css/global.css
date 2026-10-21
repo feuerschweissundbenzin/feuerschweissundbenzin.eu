@@ -1,0 +1,133 @@
+/* global */
+
+body {
+    color: white;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+div {
+    border-radius: 15px;
+    background-color: black;
+}
+
+header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+nav {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+h2 {
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+img {
+    margin: 0 auto;
+    max-width: 96%;
+    height: auto;
+}
+
+video {
+    width: 600px;
+}
+
+ul {
+    text-align: left;
+}
+
+a {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-panel {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.selectlanguage {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    background: none;
+    background-color: none;
+    display: flex;
+    align-items: center;
+}
+
+.popuplanguage {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 100%;
+    background: black;
+    padding: 1px;
+    padding-right: 15px;
+    width: 110px;
+    z-index: 10;
+}
+
+.selectlanguage:hover .popuplanguage {
+    display: block;
+}
+
+.iconlanguage {
+    height: 20px;
+    width: auto;
+    background: none;
+    background-color: none;
+    padding-bottom: 7px;
+    padding-top: 7px;
+}
+
+.iconlanguage:hover {
+    transform: scale(1.2);
+}
+
+
+.boldwhenhover {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.boldwhenhover:hover {
+    font-weight: bold;
+}
+
+.boldwhenhover-simple:hover {
+    font-weight: bold;
+}

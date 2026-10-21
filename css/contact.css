@@ -1,0 +1,27 @@
+/* contact */
+body {
+    background-color: rgb(44, 0, 2);
+}
+
+div {
+    border: rgb(44, 0, 2);
+}
+
+header {
+    background-color: rgb(44, 0, 2);
+}
+
+footer {
+    background-color: rgb(44, 0, 2);
+}
+
+.popuplanguage {
+    border: 2px solid rgb(44, 0, 2);
+}
+
+.background-image {
+    background-image: url(/icons/spiderweb.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

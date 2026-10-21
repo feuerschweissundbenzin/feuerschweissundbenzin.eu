@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<!-- starting page -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>feuerschweissundbenzin</title>
+    <link rel="icon" type="image/png" href="/icons/luxusball.png?v=2">
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
+    <link rel=" stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/kuschelecke.css">
+</head>
+
+<body>
+    <header>
+        <h1>feuerschweissundbenzin</h1>
+    </header>
+
+    <!-- PASSWORD SCREEN -->
+    <div id="passwordScreen" style="padding-bottom: 300px;">
+        <h1 style="font-size: 40px; font-family: 'Uncial Antiqua', serif; padding-top: 40px; padding-bottom: 30px;">
+            <i>pedo mellon a minno</i>
+        </h1>
+
+        <form id="passwordForm">
+            <input type="password" id="passwordInput" placeholder="password..."
+                style="font-family: 'Courier New', monospace; border: 2px solid white; border-radius: 15px; background-color: rgb(43, 43, 76); color: white;"
+                required>
+
+            <button type="submit"
+                style="border: 2px solid white; border-radius: 15px; background-color: rgb(43, 43, 76); color: white;">✿</button>
+        </form>
+
+        <p id="error"></p>
+    </div>
+
+
+    <!-- HIDDEN CONTENT -->
+    <div id="privateContent" class="background-image"
+        style="padding-top: 50px; padding-bottom: 200px; margin-top: 15px;">
+        <h2 style="text-shadow: 0.5px 1px 0.5px black;">Hi Maus!</h2>
+        <p style="text-shadow: 0.5px 1px 0.5px black;">Hier gibts content nur für dich!</p>
+    </div>
+
+    <script>
+        const correctPassword = "noviosopero67";
+
+        document.getElementById("passwordForm")
+            .addEventListener("submit", function (event) {
+
+                event.preventDefault();
+
+                const enteredPassword =
+                    document.getElementById("passwordInput").value;
+
+                if (enteredPassword === correctPassword) {
+
+                    document.getElementById("passwordScreen")
+                        .style.display = "none";
+
+                    document.getElementById("privateContent")
+                        .style.display = "block";
+
+                } else {
+
+                    document.getElementById("error")
+                        .textContent = "Incorrect password.";
+
+                }
+            });
+    </script>
+
+    <footer><a href="/de/index.html" class="boldwhenhover-simple">zurück</a></footer>
+
+</body>
+
+</html>

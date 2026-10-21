@@ -1,0 +1,42 @@
+/* geography */
+body {
+    background-color: darkorange;
+    color: black;
+}
+
+div {
+    border: darkorange;
+    background-color: white;
+}
+
+header {
+    background-color: darkorange;
+}
+
+footer {
+    background-color: darkorange;
+}
+
+a {
+    color: black;
+}
+
+img {
+    width: 600px;
+    margin: 0 auto;
+    max-width: 90%;
+    height: auto;
+}
+
+.popuplanguage {
+    border: 2px solid darkorange;
+    background: white;
+}
+
+.iconlanguage {
+    filter: invert(1);
+    height: 20px;
+    width: auto;
+    background: none;
+    background-color: none;
+}

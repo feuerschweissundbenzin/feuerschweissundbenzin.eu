@@ -1,0 +1,32 @@
+/* music */
+body {
+    background-color: rgb(107, 19, 143);
+}
+
+div {
+    border: rgb(107, 19, 143);
+}
+
+header {
+    background-color: rgb(107, 19, 143);
+}
+
+footer {
+    background-color: rgb(107, 19, 143);
+}
+
+.popuplanguage {
+    border: 2px solid rgb(107, 19, 143);
+}
+
+.bandlogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
+    max-height: 200px;
+    height: auto;
+    width: auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
