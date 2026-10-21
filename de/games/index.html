@@ -37,7 +37,9 @@
 
     <div style="padding-bottom: 40px;">
         <h2>hier findest du ein paar games</h2>
-        <a href="/de/games/snake/index.html" class="boldwhenhover-simple" id="popup-gameteaser">
+
+        <!-- ===== snake ===== -->
+        <a href="/en/games/snake/index.html" class="boldwhenhover-simple" id="popup-gameteaser">
             <p>snake</p>
             <canvas id="game-teaser" heigth="16"></canvas>
         </a>
@@ -136,9 +138,155 @@
             requestAnimationFrame(loop);
         </script>
 
-        <a id="popup-gameteaser" class="boldwhenhover-simple" href="/de/games/dino/index.html">
+        <!-- ===== tetris ===== -->
+        <a href="/en/games/tetris/index.html" class="boldwhenhover-simple" id="popup-gameteaser-tetris">
+            <p>tetris</p>
+            <canvas id="game-teaser-tetris"></canvas>
+        </a>
+
+        <script>
+            // wrapped in a function so its variables don't collide with the snake script's globals
+            (function () {
+                var canvas = document.getElementById('game-teaser-tetris');
+                var context = canvas.getContext('2d');
+
+                var grid = 16;
+                var rows = 2;
+                canvas.height = grid * rows;                 // drawing height = two cells
+                canvas.style.height = (grid * rows) + 'px';  // displayed height, same value → no stretching
+
+                var cols;
+                var count = 0;
+                var speed = 8;   // frames per step: higher = slower
+
+                // tetrominoes lying flat, so every one of them fits in 2 rows.
+                // a second entry is the same piece flipped by 180 degrees.
+                var shapes = {
+                    'I': [[[1, 1, 1, 1]]],
+                    'O': [[[1, 1], [1, 1]]],
+                    'T': [[[0, 1, 0], [1, 1, 1]], [[1, 1, 1], [0, 1, 0]]],
+                    'S': [[[0, 1, 1], [1, 1, 0]]],
+                    'Z': [[[1, 1, 0], [0, 1, 1]]],
+                    'L': [[[0, 0, 1], [1, 1, 1]], [[1, 1, 1], [1, 0, 0]]],
+                    'J': [[[1, 0, 0], [1, 1, 1]], [[1, 1, 1], [0, 0, 1]]]
+                };
+
+                var colors = {
+                    'I': 'cyan',
+                    'O': 'yellow',
+                    'T': 'purple',
+                    'S': 'green',
+                    'Z': 'red',
+                    'J': 'blue',
+                    'L': 'orange'
+                };
+
+                var bag = [];      // 7-bag: every piece shows up once before any repeats
+                var pieces = [];   // pieces currently on their way from left to right
+                var gap = 0;       // empty columns to leave before the next piece enters
+
+                function getRandomInt(min, max) {
+                    return Math.floor(Math.random() * (max - min)) + min;
+                }
+
+                function fillBag() {
+                    var names = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+                    while (names.length) {
+                        bag.push(names.splice(getRandomInt(0, names.length), 1)[0]);
+                    }
+                }
+
+                // new piece starts just outside the left edge and slides in
+                function spawn() {
+                    if (bag.length === 0) {
+                        fillBag();
+                    }
+
+                    var name = bag.pop();
+                    var options = shapes[name];
+                    var matrix = options[getRandomInt(0, options.length)];
+
+                    pieces.push({
+                        name: name,
+                        matrix: matrix,
+                        col: -matrix[0].length,
+                        // the 1-row-high I stick randomly takes the top or bottom row
+                        row: matrix.length === 1 ? getRandomInt(0, rows) : 0
+                    });
+
+                    gap = getRandomInt(4, 9);   // 4-8 empty cells between pieces
+                }
+
+                // move everything one cell to the right
+                function step() {
+                    pieces.forEach(function (p) {
+                        p.col++;
+                    });
+
+                    // pieces that have left the canvas on the right disappear
+                    pieces = pieces.filter(function (p) {
+                        return p.col < cols;
+                    });
+
+                    // next piece enters once the last one is far enough from the left edge
+                    var last = pieces[pieces.length - 1];
+                    if (!last || last.col >= gap) {
+                        spawn();
+                    }
+                }
+
+                function draw() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    pieces.forEach(function (p) {
+                        context.fillStyle = colors[p.name];
+
+                        for (var r = 0; r < p.matrix.length; r++) {
+                            for (var c = 0; c < p.matrix[r].length; c++) {
+                                if (p.matrix[r][c]) {
+                                    context.fillRect((p.col + c) * grid, (p.row + r) * grid, grid - 1, grid - 1);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // make the drawing width match the displayed width
+                function resizeCanvas() {
+                    // round down to a multiple of grid so cells line up exactly
+                    canvas.width = Math.floor(canvas.clientWidth / grid) * grid;
+                    cols = canvas.width / grid;
+                    draw();   // setting the width clears the canvas, so redraw right away
+                }
+
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                // pre-run the animation so the strip is already filled on page load
+                for (var i = 0; i < cols + 8; i++) {
+                    step();
+                }
+                draw();
+
+                function loop() {
+                    requestAnimationFrame(loop);
+
+                    if (++count < speed) {
+                        return;
+                    }
+                    count = 0;
+
+                    step();
+                    draw();
+                }
+
+                requestAnimationFrame(loop);
+            })();
+        </script>
+
+        <a id="popup-gameteaser" class="boldwhenhover-simple" href="/en/games/dino/index.html">
             <p>dino</p>
-            <img id="game-teaser" src="/icons/dino.png" style="height: 26px; width: auto;">
+            <img id="game-teaser" src="/icons/dino-teaser.png" style="height: 26px; width: auto;">
         </a>
     </div>
 

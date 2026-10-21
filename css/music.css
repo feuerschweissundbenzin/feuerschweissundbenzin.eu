@@ -30,3 +30,18 @@ footer {
     padding-top: 10px;
     padding-bottom: 20px;
 }
+
+.bandlogo:hover {
+    transform: scale(1.02);
+}
+
+.background-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.background-image:hover {
+    filter: invert(10);
+    font-weight: bold;
+}
