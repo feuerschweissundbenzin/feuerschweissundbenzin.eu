@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<!-- starting page -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>feuerschweissundbenzin</title>
+    <link rel="icon" type="image/png" href="/icons/luxusball.png">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/games.css">
+</head>
+
+<body>
+    <header>
+        <h1>feuerschweissundbenzin</h1>
+    </header>
+
+    <div style="margin-bottom: 15px;">
+        <nav>
+            <a href="/es/index.html" class="boldwhenhover-simple">home</a>
+            <a href="/es/contact/index.html" class="boldwhenhover-simple">contacto</a>
+            <div class="selectlanguage">
+                <img class="iconlanguage" src="/icons/languages.png">
+                <div class="popuplanguage">
+                    <ul>
+                        <li class="boldwhenhover"><a href="/en/games/dino/index.html">english</a></li>
+                        <li class="boldwhenhover"><a href="/de/games/dino/index.html">deutsch</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div style="padding-bottom: 40px;">
+        <canvas width="400" height="400" id="game" style="margin-top: 70px; margin-bottom: 70px;"></canvas>
+
+        <script>
+            var canvas = document.getElementById('game');
+            var context = canvas.getContext('2d');
+
+            var grid = 16;
+            var groundY = grid * 21;        // y position of the ground line
+
+            // difficulty settings (px per second)
+            var startSpeed = 200;           // speed at the beginning
+            var maxSpeed = 520;             // speed never goes above this
+            var acceleration = 6;           // speed gained per second of play
+            var gravity = 2000;
+            var jumpSpeed = 620;
+
+            var state = 'waiting';          // 'waiting', 'running' or 'over'
+            var speed = startSpeed;
+            var distance = 0;
+            var best = 0;
+            var lastTime = null;
+            var overTime = 0;
+            var nextObstacle = 0;
+            var obstacles = [];
+
+            var dino = {
+                x: grid * 3,
+                y: groundY - grid * 2,
+                w: grid * 2,
+                h: grid * 2,
+                vy: 0,
+                onGround: true
+            };
+
+            var dinoImg = new Image();
+            dinoImg.src = '/icons/dino.png';
+
+            var cactusImg = new Image();
+            cactusImg.src = '/icons/cactus.png';   // your file path
+
+            function reset() {
+                speed = startSpeed;
+                distance = 0;
+                obstacles = [];
+                nextObstacle = 300;
+                dino.y = groundY - dino.h;
+                dino.vy = 0;
+                dino.onGround = true;
+            }
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
+
+            function spawnObstacle() {
+                var h = getRandomInt(2, 4) * grid;      // 2 or 3 cells tall
+                var w;
+
+                if (cactusImg.complete && cactusImg.naturalWidth > 0) {
+                    // keep the image's proportions
+                    w = Math.round(h * cactusImg.naturalWidth / cactusImg.naturalHeight);
+                } else {
+                    w = getRandomInt(1, 3) * grid;      // fallback block
+                }
+
+                obstacles.push({ x: canvas.width, y: groundY - h, w: w, h: h });
+
+                // gap grows with speed so the jump stays possible
+                nextObstacle = speed * 0.62 + w + 120 + Math.random() * 200;
+            }
+
+            function jump() {
+                if (dino.onGround) {
+                    dino.vy = -jumpSpeed;
+                    dino.onGround = false;
+                }
+            }
+
+            function hits(a, b) {
+                var m = 4;      // forgiveness in px, makes near misses fair
+                return a.x + m < b.x + b.w &&
+                    a.x + a.w - m > b.x &&
+                    a.y + m < b.y + b.h &&
+                    a.y + a.h - m > b.y;
+            }
+
+            function update(dt) {
+                // speed rises over time
+                speed = Math.min(maxSpeed, speed + acceleration * dt);
+                distance += speed * dt;
+
+                // jump physics
+                dino.vy += gravity * dt;
+                dino.y += dino.vy * dt;
+                if (dino.y >= groundY - dino.h) {
+                    dino.y = groundY - dino.h;
+                    dino.vy = 0;
+                    dino.onGround = true;
+                }
+
+                // move obstacles left, remove those that left the screen
+                obstacles.forEach(function (o) { o.x -= speed * dt; });
+                obstacles = obstacles.filter(function (o) { return o.x + o.w > 0; });
+
+                nextObstacle -= speed * dt;
+                if (nextObstacle <= 0) {
+                    spawnObstacle();
+                }
+
+                // collision
+                for (var i = 0; i < obstacles.length; i++) {
+                    if (hits(dino, obstacles[i])) {
+                        state = 'over';
+                        overTime = performance.now();
+                        best = Math.max(best, Math.floor(distance / 10));
+                        break;
+                    }
+                }
+            }
+
+            function draw() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                // ground
+                context.fillStyle = 'darkolivegreen';
+                context.fillRect(0, groundY, canvas.width, 1);
+
+                // dino
+                if (dinoImg.complete && dinoImg.naturalWidth > 0) {
+                    context.drawImage(dinoImg, dino.x, dino.y, dino.w, dino.h);
+                } else {
+                    context.fillRect(dino.x, dino.y, dino.w - 1, dino.h - 1);   // fallback until loaded
+                }
+
+                // obstacles
+                context.fillStyle = 'red';
+                var cactusReady = cactusImg.complete && cactusImg.naturalWidth > 0;
+                obstacles.forEach(function (o) {
+                    if (cactusReady) {
+                        context.drawImage(cactusImg, o.x, o.y, o.w, o.h);
+                    } else {
+                        context.fillRect(o.x, o.y, o.w - 1, o.h - 1);   // fallback
+                    }
+                });
+
+                // score
+                context.fillStyle = 'white';
+                context.font = '16px monospace';
+                context.textAlign = 'right';
+                context.fillText('Best ' + best + '   Score ' + Math.floor(distance / 10), canvas.width - grid, grid * 2);
+
+                // messages
+                context.textAlign = 'center';
+                if (state === 'waiting') {
+                    context.fillText('Press space to start', canvas.width / 2, grid * 8);
+                } else if (state === 'over') {
+                    context.fillText('Game over - press space', canvas.width / 2, grid * 8);
+                }
+            }
+
+            function loop(timestamp) {
+                requestAnimationFrame(loop);
+
+                if (lastTime === null) { lastTime = timestamp; }
+                var dt = Math.min((timestamp - lastTime) / 1000, 0.05);   // seconds, capped
+                lastTime = timestamp;
+
+                if (state === 'running') {
+                    update(dt);
+                }
+                draw();
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if (e.code !== 'Space') { return; }
+                e.preventDefault();                     // stop the page from scrolling
+                if (e.repeat) { return; }
+
+                if (state === 'waiting') {
+                    reset();
+                    state = 'running';
+                    jump();
+                } else if (state === 'running') {
+                    jump();
+                } else if (state === 'over' && performance.now() - overTime > 300) {
+                    reset();
+                    state = 'running';
+                    jump();
+                }
+            });
+
+            reset();
+            requestAnimationFrame(loop);
+        </script>
+
+        <a href="/es/games/index.html" class="boldwhenhover-simple">
+            <p style="padding-top: 70px;"><i>atrás...</i></p>
+        </a>
+    </div>
+
+    <footer>
+        <p>
+            suigeme en <b><a href="https://www.instagram.com/feuerschweissundbenzin/" target="_blank">
+                    instagram</a></b> para ver más...
+        </p>
+    </footer>
+
+</body>
+
+</html>
