@@ -1,0 +1,87 @@
+/* wunschzettel */
+body {
+    background-color: rgb(150, 150, 150);
+}
+
+div {
+    border: rgb(150, 150, 150);
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+header {
+    background-color: rgb(150, 150, 150);
+}
+
+footer {
+    background-color: rgb(150, 150, 150);
+}
+
+img {
+    width: 400px;
+    margin-bottom: 40px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 3px solid black;
+    max-width: 96%;
+    height: auto;
+}
+
+h1 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.wunschzettel-icon {
+    margin-bottom: 50px;
+}
+
+.wunschzettel-icon:hover {
+    transform: scale(1.02);
+}
+
+.wunschzettel-info {
+    position: relative;
+    display: inline-block;
+    display: flex;
+
+    cursor: pointer;
+    border: none;
+    background: none;
+    background-color: none;
+    justify-content: center;
+}
+
+.wunschzettel-popup {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 120%;
+    background: black;
+    border: 1px solid rgb(150, 150, 150);
+    font-weight: normal;
+}
+
+.wunschzettel-info:hover .wunschzettel-popup {
+    display: block;
+}
+
+.wunschzettel-info:hover {
+    font-weight: bold;
+}
+
+.icon-camera-godox {
+    height: 300px;
+    width: 300px;
+
+    background-image: url(/icons/wunschzettel/camera_godox.png);
+    background-position: center;
+    background-size: 300px;
+    background-repeat: no-repeat;
+    margin-bottom: 40px;
+}
+
+.icon-camera-godox:hover {
+    background-image: url(/icons/wunschzettel/camera_godox_blitz.png);
+}
